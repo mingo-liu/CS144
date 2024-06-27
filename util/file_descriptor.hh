@@ -61,13 +61,13 @@ public:
   // Free the std::shared_ptr; the FDWrapper destructor calls close() when the refcount goes to zero.
   ~FileDescriptor() = default;
 
-  // Read into `buffer`
+  // Read into `buffer`, fd --> buffer
   void read( std::string& buffer );
   void read( std::vector<std::string>& buffers );
 
-  // Attempt to write a buffer
+  // Attempt to write a buffer, buffer ---> fd;
   // returns number of bytes written
-  size_t write( std::string_view buffer );
+  size_t write( std::string_view buffer );  
   size_t write( const std::vector<std::string_view>& buffers );
   size_t write( const std::vector<std::string>& buffers );
 

@@ -43,8 +43,8 @@ FileDescriptor::FDWrapper::FDWrapper( int fd ) : fd_( fd )
     throw runtime_error( "invalid fd number:" + to_string( fd ) );
   }
 
-  const int flags = CheckSystemCall( "fcntl", fcntl( fd, F_GETFL ) ); // NOLINT(*-vararg)
-  non_blocking_ = flags & O_NONBLOCK;                                 // NOLINT(*-bitwise)
+  const int flags = CheckSystemCall( "fcntl", fcntl( fd, F_GETFL ) ); // NOLINT(*-vararg), return state flag from fd
+  non_blocking_ = flags & O_NONBLOCK;                                 // NOLINT(*-bitwise), check if fd is non-blocking.
 }
 
 void FileDescriptor::FDWrapper::close()
