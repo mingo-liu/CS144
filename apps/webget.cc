@@ -13,10 +13,10 @@ void get_URL( const string& host, const string& path )
   // cerr << "Warning: get_URL() has not been implemented yet.\n";
   // Todo:
   TCPSocket sock;
-  Address serv_adr(host, "http");
-  sock.connect(serv_adr);
+  Address serv_adr( host, "http" );
+  sock.connect( serv_adr );
 
-  string http_request; 
+  string http_request;
   string get = "GET " + path + " HTTP/1.1" + "\r\n";
   string host_name = "HOST: " + host + "\r\n";
   string connection = "Connection: close\r\n";
@@ -24,12 +24,12 @@ void get_URL( const string& host, const string& path )
   http_request = get + host_name + connection + end;
 
   // send a HTTP request
-  sock.write(http_request);
+  sock.write( http_request );
 
   // receive a HTTP response from the server
   string read_buffer;
-  while (!sock.eof()) {   
-    sock.read(read_buffer);  // a single call to read is not enough
+  while ( !sock.eof() ) {
+    sock.read( read_buffer ); // a single call to read is not enough
     cout << read_buffer;
   }
 

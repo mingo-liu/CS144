@@ -67,7 +67,7 @@ public:
 
   // Attempt to write a buffer, buffer ---> fd;
   // returns number of bytes written
-  size_t write( std::string_view buffer );  
+  size_t write( std::string_view buffer );
   size_t write( const std::vector<std::string_view>& buffers );
   size_t write( const std::vector<std::string>& buffers );
 
