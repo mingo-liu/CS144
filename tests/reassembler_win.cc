@@ -35,7 +35,6 @@ int main()
 
       string d( offset, 0 );
       generate( d.begin(), d.end(), [&] { return rd(); } );
-
       for ( auto [off, sz] : seq_size ) {
         sr.execute( Insert { d.substr( off, sz ), off }.is_last( off + sz == offset ) );
       }

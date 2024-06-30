@@ -1,12 +1,14 @@
 #pragma once
 
 #include "byte_stream.hh"
+#include <map>
+#include <unordered_map>
 
 class Reassembler
 {
 public:
   // Construct Reassembler to write into given ByteStream.
-  explicit Reassembler( ByteStream&& output ) : output_( std::move( output ) ) {}
+  explicit Reassembler( ByteStream&& output ) : output_( std::move( output ) ){}
 
   /*
    * Insert a new substring to be reassembled into a ByteStream.
@@ -39,7 +41,13 @@ public:
 
   // Access output stream writer, but const-only (can't write from outside)
   const Writer& writer() const { return output_.writer(); }
+  //Writer& writer() { return output_.writer(); }
 
 private:
+  uint64_t expected_index_ = 0; 
+  uint64_t bytes_pending_ = 0;
+  uint64_t eof_index_ = -1;
   ByteStream output_; // the Reassembler writes to this ByteStream
+  std::map<uint64_t, char> internal_storage_ {};
+  //std::unordered_map<uint64_t, char> internal_storage_ {};
 };
