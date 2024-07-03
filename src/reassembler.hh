@@ -1,8 +1,10 @@
 #pragma once
 
 #include "byte_stream.hh"
-#include <map>
-#include <unordered_map>
+#include <list>
+#include <vector>
+
+
 
 class Reassembler
 {
@@ -32,6 +34,8 @@ public:
    */
   void insert( uint64_t first_index, std::string data, bool is_last_substring );
 
+
+
   // How many bytes are stored in the Reassembler itself?
   uint64_t bytes_pending() const;
 
@@ -44,10 +48,20 @@ public:
   //Writer& writer() { return output_.writer(); }
 
 private:
-  uint64_t expected_index_ = 0; 
-  uint64_t bytes_pending_ = 0;
-  uint64_t eof_index_ = -1;
+  void insert_buffer(uint64_t first_index, uint64_t last_index, std::string data);
+  void insert_stream_from_buffer();
+  void insert_stream_from_expected_data(const std::string &data);
+
+private:
+  struct Block {
+    uint64_t first_index;   // buffer_ 中区间的左端点
+    uint64_t last_index;    // 区间右端点
+    std::string data;       // 区间内的字节
+  };
+
+  uint64_t expected_index_ {}; 
+  uint64_t buffer_size_ {};
+  bool last_substring_ {};
   ByteStream output_; // the Reassembler writes to this ByteStream
-  std::map<uint64_t, char> internal_storage_ {};
-  //std::unordered_map<uint64_t, char> internal_storage_ {};
+  std::list<Block> buffer_ {};
 };
