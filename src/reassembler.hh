@@ -34,8 +34,6 @@ public:
    */
   void insert( uint64_t first_index, std::string data, bool is_last_substring );
 
-
-
   // How many bytes are stored in the Reassembler itself?
   uint64_t bytes_pending() const;
 
@@ -45,7 +43,10 @@ public:
 
   // Access output stream writer, but const-only (can't write from outside)
   const Writer& writer() const { return output_.writer(); }
-  //Writer& writer() { return output_.writer(); }
+  // Writer& writer() { return output_.writer(); }
+  
+  // return the expected index, i.e. the first unassembled index
+  const uint64_t & expected_index() const { return expected_index_; };
 
 private:
   void insert_buffer(uint64_t first_index, uint64_t last_index, std::string data);
@@ -59,9 +60,9 @@ private:
     std::string data;       // 区间内的字节
   };
 
-  uint64_t expected_index_ {}; 
-  uint64_t buffer_size_ {};
-  bool last_substring_ {};
+  uint64_t expected_index_ {};  // ByteStream中期望的下一个字节 
+  uint64_t buffer_size_ {};     //  buffer_的大小，和ByteStream公用一个capacity
+  bool last_substring_ {};      // 是否是最后一个子串？
   ByteStream output_; // the Reassembler writes to this ByteStream
   std::list<Block> buffer_ {};
 };

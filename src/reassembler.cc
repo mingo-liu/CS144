@@ -33,7 +33,8 @@ void Reassembler::insert( uint64_t first_index, string data, bool is_last_substr
   
   if (first_index == expected_index_ && buffer_.empty()) {
     insert_stream_from_expected_data(data);
-  } else if (first_index == expected_index_ && last_index <= buffer_.front().last_index + 1) {
+  } else if (first_index == expected_index_ && 
+             last_index <= buffer_.front().last_index + 1) {
     data.resize(min(last_index, buffer_.front().first_index) - first_index); // 计算调整data的大小, 丢掉data后边与buffer_中的第一个子串的重叠部分
     insert_stream_from_expected_data(data);
   } else {      // 1.first_index != expected_index_ 
@@ -47,10 +48,11 @@ void Reassembler::insert( uint64_t first_index, string data, bool is_last_substr
   insert_stream_from_buffer();
 }
 
-void Reassembler::insert_buffer(uint64_t first_index, uint64_t last_index, std::string data) {
+void Reassembler::insert_buffer(uint64_t first_index, uint64_t last_index,
+                                std::string data) {
   auto l = first_index, r = last_index;
   auto buffer_begin = buffer_.begin(), buffer_end = buffer_.end();
-  auto left = lower_bound(buffer_begin, buffer_end, l, [] (const Block &a, uint64_t b) { return a.last_index < b; });
+  auto left = lower_bound(buffer_begin, buffer_end, l, [] (const Block &a, uint64_t b) { return a.last_index < b;});
   auto right = upper_bound(buffer_begin, buffer_end, r, [] (uint64_t b, const Block &a) { return a.first_index > b;});
   if (left != buffer_end) {
     l = min(l, left->first_index);

@@ -26,5 +26,7 @@ public:
   const Writer& writer() const { return reassembler_.writer(); }
 
 private:
+  Wrap32 isn_ {0};    // initial sequence number(ISN)
+  bool started_ {};   // the first arriving segment with SYN flag ? 
   Reassembler reassembler_;
 };

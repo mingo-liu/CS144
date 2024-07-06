@@ -14,11 +14,14 @@ public:
   explicit Wrap32( uint32_t raw_value ) : raw_value_( raw_value ) {}
 
   /* Construct a Wrap32 given an absolute sequence number n and the zero point. */
+  /* zero_point: ISN 
+  */
   static Wrap32 wrap( uint64_t n, Wrap32 zero_point );
 
   /*
    * The unwrap method returns an absolute sequence number that wraps to this Wrap32, given the zero point
    * and a "checkpoint": another absolute sequence number near the desired answer.
+   * zero_point: ISN
    *
    * There are many possible absolute sequence numbers that all wrap to the same Wrap32.
    * The unwrap method should return the one that is closest to the checkpoint.
@@ -29,5 +32,5 @@ public:
   bool operator==( const Wrap32& other ) const { return raw_value_ == other.raw_value_; }
 
 protected:
-  uint32_t raw_value_ {};
+  uint32_t raw_value_ {};   // 放到TCP报文段中的32-bit的序号
 };
